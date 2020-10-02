@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ntt test</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Router Application</h2>
+        {% load bootstrap4 %}
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form method="post" class="form">
+                    <div class="update"> <input type="hidden" name="update_id" value=""></div>
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button type="button" class="btn btn-primary" onclick="createRouter()">Submit</button>
+                    {% endbuttons %}
+                </form>
+            </div>
+            <div class="col-3"></div>
+
+        </div>
+        
+        <br>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-info" onclick="generateRecords()">Generate Records</button>
+        </div>
+        <br>
+
+        <div class="col-md-12">
+
+            {% if routers %}
+            <table class="table">
+                <thead class="thead-dark" id="router_details">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Ip Address</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for router in routers %}
+                        <tr>
+                            <td scope="row" class="counter_id">{{ router.id }}</td>
+                            <td>{{ router.name }}</td>
+                            <td>{{ router.ip_address }}</td>
+                            <td colspan="2"> <span onclick="editRouter({{ router.id }})"> Edit </span>
+                                | <span onclick="deleteRouter({{ router.id }})">Delete</span> </td>
+                        </tr>
+                    {% endfor %}
+                  
+                  
+                </tbody>
+              </table>
+                
+            {% endif %}
+
+        </div>
+
+    </div>
+    {% block javascript %}
+        <script>
+        </script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/app.js' %}"></script>
+
+    {% endblock %}
+</body>
+</html>
