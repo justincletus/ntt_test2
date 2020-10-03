@@ -109,4 +109,6 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
+ntt_test/ntt_test/settings.ini
+
 
