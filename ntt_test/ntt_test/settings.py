@@ -135,21 +135,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-DEFAULT_FROM_EMAIL = 'Ntt Test <justin.beckham81@gmail.com>'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_USE_TLS = True
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USER = config('EMAIL_USERNAME')
-EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
-
-EMAIL_DETAILS = {
-    'USERNAME': config('EMAIL_USERNAME'),
-    'PASSWORD': config('EMAIL_PASSWORD'),
-    'IMAP_URL': config('IMAP_URL')
-}
-
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
