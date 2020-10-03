@@ -29,13 +29,11 @@ axis3 = []
 for i in range(0, len(vertices3), 2):
     axis3.append(graphics.Point(vertices3[i], vertices3[i+1]))
 
-
 vertices4 = [300, 230, 340, 310, 250, 310]
 axis4 = []
 
 for i in range(0, len(vertices4), 2):
     axis4.append(graphics.Point(vertices4[i], vertices4[i+1]))
-
 
 triangle = graphics.Polygon(axis)
 triangle.setFill('blue')
@@ -52,7 +50,6 @@ triangle.draw(win)
 triangle = graphics.Polygon(axis4)
 triangle.setFill('red')
 triangle.draw(win)
-
 
 win.getMouse()
 win.close()

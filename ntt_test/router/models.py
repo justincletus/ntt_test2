@@ -2,8 +2,10 @@ from django.db import models
 from django.urls import reverse
 
 class Router(models.Model):
-    name = models.CharField(max_length=100)
-    ip_address = models.IntegerField(default=None, null=True, blank=True)
+    sap_id = models.IntegerField(default=1)
+    hostname = models.CharField(max_length=100, default=None, null=True, blank=True)
+    ip_address = models.CharField(max_length=100, default=None, null=True, blank=True)
+    mac_address = models.CharField(max_length=100, default=None, null=True, blank=True)
 
 
     def get_absolute_url(self):
@@ -11,4 +13,4 @@ class Router(models.Model):
     
 
     def __str__(self):
-        return self.name
+        return self.sap_id

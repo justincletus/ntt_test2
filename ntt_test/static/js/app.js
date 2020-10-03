@@ -1,7 +1,9 @@
 function createRouter() {
     let token = $('input[name=csrfmiddlewaretoken]').val();
-    let name = $('input[name=name]').val();
-    let ip_add = $('input[name=ip_address]').val();
+    let sap_id = $('input[name=sap_id]').val();
+    let hostname = $('input[name=hostname]').val();
+    let ip_address = $('input[name=ip_address]').val();
+    let mac_address = $('input[name=mac_address]').val();
     let id = $('input[name="update_id"]').val();
     if (id) {
         $.ajax({
@@ -10,17 +12,21 @@ function createRouter() {
             url: '/create-router/',
             data: {
                 'token': token,
-                'name': name,
-                'ip_add': ip_add,
+                'sap_id': sap_id,
+                'hostname': hostname,
+                'ip_address': ip_address,
+                'mac_address': mac_address,
                 'id': id
             },
             dataType: 'json',
             success: function(data) {
                 $('#router_details').replaceWith(
                     "<tr>" +
-                    "<td>" +data.id  +"</td>" +
-                    "<td>" +data.name  +"</td>" +
-                    "<td>" + data.ip_add  +"</td>" +
+                    "<td>" + data.id  +"</td>" +
+                    "<td>" + data.sap_id  +"</td>" +
+                    "<td>" + data.hostname  +"</td>" +
+                    "<td>" + data.ip_address  +"</td>" +
+                    "<td>" + data.mac_address  +"</td>" +
                     "<td colspan="+"2" + ">" + 
                         "<span onclick=" + `editRouter(data.id)` +"> Edit </span> |" +
                         "<span onclick=" + `deleteRouter(data.id)` +">Delete</span>" +"</td>"
@@ -34,15 +40,17 @@ function createRouter() {
         });
     }
 
-    if (name) {
+    if (sap_id) {
         $.ajax({
             headers: { "X-CSRFToken": token },
             type: 'post',
             url: '/create-router/',
             data: {
                 'token': token,
-                'name': name,
-                'ip_add': ip_add,
+                'sap_id': sap_id,
+                'hostname': hostname,
+                'ip_address': ip_address,
+                'mac_address': mac_address,
                 'id': id
             },
             dataType: 'json',
@@ -50,8 +58,10 @@ function createRouter() {
                 $('#router_details').append(
                     "<tr>" +
                     "<td>" +data.id  +"</td>" +
-                    "<td>" +data.name  +"</td>" +
-                    "<td>" + data.ip_add  +"</td>" +
+                    "<td>" +data.sap_id  +"</td>" +
+                    "<td>" + data.hostname  +"</td>" +
+                    "<td>" +data.ip_address  +"</td>" +
+                    "<td>" + data.mac_address  +"</td>" +
                     "<td colspan="+"2" + ">" + 
                         "<span onclick=" + `editRouter(data.id)` +"> Edit </span> |" +
                         "<span onclick=" + `deleteRouter(data.id)` +">Delete</span>" +"</td>"
@@ -71,7 +81,7 @@ function createRouter() {
             }
         })
     }
-    if (!name) {
+    if (!sap_id) {
         alert('Name is required');
     }
     
@@ -102,9 +112,12 @@ function editRouter(id) {
             },
             dataType: 'json',
             success: function(data) {
+                //console.log(data);
                 $('input[name="update_id"]').val(data.id);
-                $('input[name="name"]').val(data.name);
-                $('input[name="ip_address"]').val(data.ip_add);
+                $('input[name="sap_id"]').val(data.sap_id);
+                $('input[name="hostname"]').val(data.hostname);
+                $('input[name="ip_address"]').val(data.ip_address);
+                $('input[name="mac_address"]').val(data.mac_address);
             },
             error: function(err) {
                 console.log(err)
@@ -142,7 +155,7 @@ function deleteRouter(id) {
 
 function generateRecords() {
     let v = prompt("How number of you want create? ");
-    console.log(v);
+    //console.log(v);
     if (v) {
         $.ajax({
             url: '/generateRecords/',
