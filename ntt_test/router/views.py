@@ -6,6 +6,13 @@ from django.core import serializers
 from django.contrib import messages
 import strgen
 import random
+from rest_framework import viewsets
+from .serializers import RouterSerializer
+from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from rest_framework.decorators import api_view
+from rest_framework import status
 
 def routerList(request):
 
@@ -50,7 +57,6 @@ def createRouter(request, *args, **kwargs):
         }
         
         return JsonResponse(data, safe=False)
-    
 
     elif request.method == 'POST':
         if form_data['sap_id'] is not None:
@@ -154,9 +160,6 @@ def generateRecords(request):
         router.ip_address = randString['ip_address']
         router.mac_address = randString['mac_address']
         router.save()
-        # data = {
-        #     'info': 'Router created'
-        # }
 
         data = {
             'id': router.id,
@@ -179,9 +182,9 @@ def generateString():
             num1 = random.random()
             num1 *= 1000
             ip_add += str(int(num1)) +'.'
-        
+
         return ip_add[:-1]
-    
+
     data = {
         'sap_id': sap_id,
         'hostname': hostname,
@@ -189,5 +192,48 @@ def generateString():
         'mac_address': ipAdd(5)
     }
 
-    #print(data)
     return data
+
+
+@api_view(['POST', 'GET'])
+def createRouterByApi(request, *args, **kwargs):
+    if request.method == 'POST':
+        serializer = RouterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def listRouterByApi(request):
+    if request.method == 'GET':
+        routers = Router.objects.all()
+        serializer = RouterSerializer(routers, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def routerDetailApi(request, pk):
+    try:
+        router = Router.objects.get(pk=pk)
+    except Router.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RouterSerializer(router)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        serializer = RouterSerializer(router, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        router.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
